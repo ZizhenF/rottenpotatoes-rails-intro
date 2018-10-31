@@ -12,6 +12,9 @@ class MoviesController < ApplicationController
 
   def index
     @flag = params[:sort]
+    @ratings_flag = params[:rating]
+    @all_ratings = Movie.uniq.pluck(:rating)
+=begin
     if @flag == nil
       @movies = Movie.all
     end
@@ -20,6 +23,21 @@ class MoviesController < ApplicationController
     end
     if @flag == "date"
       @movies = Movie.order(:release_date)
+    end
+=end
+    if params[:ratings]!=nil
+      @movies = Movie.where({rating: params[:ratings].keys})
+    else
+      @movies = Movie.all
+    end
+    if @flag == nil
+      @movies
+    end
+    if @flag == "title"
+      @movies = @movies.sort_by {|a| a.title}
+    end
+    if @flag == "date"
+      @movies = @movies.sort_by {|a| a.release_date}
     end
   end
 
