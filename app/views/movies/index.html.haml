@@ -4,7 +4,6 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    =puts @ratingsdict[rating] if @ratingsdict
     = check_box_tag "ratings[#{rating}]", value = 1, checked = @ratingsdict ? @ratingsdict[rating] : true
   = submit_tag 'Refresh',{:id => 'ratings_submit'}
 %table#movies

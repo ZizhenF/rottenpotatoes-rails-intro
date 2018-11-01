@@ -13,10 +13,25 @@ class MoviesController < ApplicationController
   def index
     session[:sort] = params[:sort] if params[:sort]
     session[:ratings] = params[:ratings] if params[:ratings]
+
+    if !params[:sort]
+      if session[:sort]
+        params[:sort] = session[:sort]
+        redirect_to movies_path params and return
+      end
+    end
+    if !params[:ratings]
+      if session[:ratings]
+        params[:ratings] = session[:ratings]
+        redirect_to movies_path params and return
+      end
+    end
+
+    session.keys.each {|key| puts key}
     @ratingsdict = session[:ratings]
     @flag = session[:sort]
     @pr = @flag.class
-    @ratings_flag = session[:rating]
+    @ratings_flag = session[:ratings]
     @all_ratings = Movie.uniq.pluck(:rating)
     @movies =  Movie.all
     if session[:ratings]!=nil
