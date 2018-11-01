@@ -11,17 +11,19 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @flag = params[:sort]
+    session[:sort] = params[:sort] if params[:sort]
+    session[:ratings] = params[:ratings] if params[:ratings]
+    @ratingsdict = session[:ratings]
+    @flag = session[:sort]
     @pr = @flag.class
-    logger.info ("hello")
-    @ratings_flag = params[:rating]
+    @ratings_flag = session[:rating]
     @all_ratings = Movie.uniq.pluck(:rating)
     @movies =  Movie.all
-    if params[:ratings]!=nil
-      @movies = @movies.where({rating: params[:ratings].keys})
+    if session[:ratings]!=nil
+      @movies = @movies.where({rating: session[:ratings].keys})
     end
-    if params[:sort]!=nil
-      @movies = @movies.order params[:sort]
+    if session[:sort]!=nil
+      @movies = @movies.order session[:sort]
     end
   end
 
